@@ -1,4 +1,8 @@
 const form = document.querySelector("form");
+const symbol = document.querySelector(".symbol");
+const date = document.querySelector(".date");
+const open = document.querySelector(".open");
+const close = document.querySelector(".close");
 
 const user = "davidfbergeron";
 const API_KEY = "AHGHSQCQOVT6Z8E0";
@@ -7,17 +11,29 @@ const API_STR =
 
 form.addEventListener("submit", e => {
   e.preventDefault();
-  let city = form.elements.location.value;
-  getStockReport(city);
+  let stock = form.elements.stock.value;
+  getStockReport(stock);
 });
 
 function getStockReport(stock) {
-  return fetch(buildStockQuery(stock))
+  const query = buildStockQuery(stock);
+  fetch(query)
     .then(res => res.json())
-    .then(data => {
-      console.log(data);
-      // buildWeatherReport(data);
-    });
+    .then(stockData => displayStockReport(stockData));
+}
+
+function displayStockReport(stockData) {
+  const { "Meta Data": meta, "Time Series (5min)": stockQuotes } = stockData;
+
+  const stockSymbol = meta["2. Symbol"].toUpperCase();
+  console.log(stockSymbol);
+  const latest = meta["3. Last Refreshed"];
+  const quote = stockQuotes[latest];
+  const quoteDate = latest.split(" ")[0];
+
+  symbol.innerText = stockSymbol;
+  date.innerText = quoteDate;
+  console.log(quote);
 }
 
 function buildStockQuery(stock) {

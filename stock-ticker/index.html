@@ -2,15 +2,14 @@
 <html class="no-js" lang="">
   <head>
     <meta charset="utf-8" />
-    <title>Stock Ticker - David Bergeron</title>
+    <title>1337 Stock Ticker - David Bergeron</title>
     <meta
       name="description"
-      content="A simple stock ticker app that queries the Alpha Va"
+      content="A simple stock ticker app that queries the Alpha Vantage API"
     />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <link rel="manifest" href="site.webmanifest" /
-    <!-- Place favicon.ico in the root directory -->
 
     <link rel="stylesheet" href="css/normalize.css" />
     <link rel="stylesheet" href="css/main.css" />
@@ -27,9 +26,11 @@
 
     <section class="stock-display">
       <h1>Stock Ticker</h1>
-      <div class="details">Symbol: <span class="location"></span></div>
-      <div class="details">Date: <span class="location"></span></div>
-      <div class="details">Open: <span class="location"></span></div>
+      <div class="details">Symbol: <span class="symbol"></span></div>
+      <div class="details">Date: <span class="date"></span></div>
+      <div class="details">Open: <span class="open"></span></div>
+      <div class="details">Highest: <span class="max"></span></div>
+      <div class="details">Close: <span class="close"></span></div>
     </section>
 
     <script src="js/vendor/modernizr-3.7.1.min.js"></script>
