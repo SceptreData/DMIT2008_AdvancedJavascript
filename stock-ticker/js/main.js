@@ -2,6 +2,7 @@ const form = document.querySelector("form");
 const symbol = document.querySelector(".symbol");
 const date = document.querySelector(".date");
 const open = document.querySelector(".open");
+const max = document.querySelector(".max");
 const close = document.querySelector(".close");
 
 const user = "davidfbergeron";
@@ -29,11 +30,12 @@ function displayStockReport(stockData) {
   console.log(stockSymbol);
   const latest = meta["3. Last Refreshed"];
   const quote = stockQuotes[latest];
+
   const quoteDate = latest.split(" ")[0];
+  const open
 
   symbol.innerText = stockSymbol;
   date.innerText = quoteDate;
-  console.log(quote);
 }
 
 function buildStockQuery(stock) {
