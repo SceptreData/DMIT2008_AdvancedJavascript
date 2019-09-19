@@ -54,11 +54,11 @@ function displayStockReport(stockData) {
   // Output our data to the screen.
   symbolField.innerText = symbol;
   dateField.innerText = latestQuoteTime;
-  openField.innerText = open;
-  maxField.innerText = max;
-  lowField.innerText = low;
-  closeField.innerText = close;
-  changeField.innerText = change;
+  openField.innerText = Number(open).toFixed(2);
+  maxField.innerText = Number(max).toFixed(2);
+  lowField.innerText = Number(low).toFixed(2);
+  closeField.innerText = Number(close).toFixed(2);
+  changeField.innerText = change.toFixed(2);
 }
 
 function buildStockQuery(stock) {
