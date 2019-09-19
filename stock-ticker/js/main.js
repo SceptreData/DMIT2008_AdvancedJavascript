@@ -1,4 +1,17 @@
+/*
+ * DMIT-2008 Advanced Javascript
+ * Assignment 1
+ * 
+ * David Bergeron
+ */
+
+const API_KEY = 'AHGHSQCQOVT6Z8E0';
+const API_ENDPOINT =
+  'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=';
+
 const form = document.querySelector('form');
+
+// Grab all the divs we will use to display stock info.
 const symbolField = document.querySelector('.symbol');
 const dateField = document.querySelector('.date');
 const openField = document.querySelector('.open');
@@ -7,13 +20,9 @@ const lowField = document.querySelector('.low');
 const closeField = document.querySelector('.close');
 const changeField = document.querySelector('.change');
 
-const errorField = document.querySelector('.error');
+// Create a field to display errors.
+const errField = document.querySelector('.error');
 
-const API_KEY = 'AHGHSQCQOVT6Z8E0';
-//  const API_STR =
-//    'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=';
-const API_STR =
-  'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=';
 
 form.addEventListener('submit', e => {
   e.preventDefault();
@@ -26,14 +35,16 @@ form.addEventListener('submit', e => {
   }
 });
 
-function getStockReport(stock) {
+
+const getStockReport = stock => {
   const query = buildStockQuery(stock);
   fetch(query)
     .then(res => res.json())
     .then(stockData => displayStockReport(stockData));
 }
 
-function displayStockReport(stockData) {
+
+const displayStockReport = stockData => {
   const { 'Meta Data': metadata, 'Time Series (5min)': quotes } = stockData;
   const {
     ['2. Symbol']: symbol,
@@ -51,8 +62,8 @@ function displayStockReport(stockData) {
   } = latestQuote;
   const change = open - close;
 
-  // Output our data to the screen.
-  symbolField.innerText = symbol;
+  // Output our data to the screen, limit to two decimal points.
+  symbolField.innerText = symbol.toUpperCase();
   dateField.innerText = latestQuoteTime;
   openField.innerText = Number(open).toFixed(2);
   maxField.innerText = Number(max).toFixed(2);
@@ -61,13 +72,8 @@ function displayStockReport(stockData) {
   changeField.innerText = change.toFixed(2);
 }
 
-function buildStockQuery(stock) {
-  // return `${API_STR}${city}&appid=${API_KEY}`;
-  console.log(`${API_STR}${stock}interval=5min&apikey=${API_KEY}`);
-  return `${API_STR}${stock}&interval=5min&apikey=${API_KEY}`;
-}
 
-function convertDate(dateStr) {
+const convertDate = dateStr => {
   const options = {
     weekday: 'long',
     year: 'numeric',
@@ -84,14 +90,16 @@ function convertDate(dateStr) {
   return new Intl.DateTimeFormat('en-US', options).format(date);
 }
 
-function logError(err) {
-  errorField.innerText = err;
+
+const buildStockQuery = stock => {
+  return `${API_ENDPOINT}${stock}&interval=5min&apikey=${API_KEY}`;
 }
 
-function clearError() {
-  errorField.innerText = '';
-}
 
-function isEmptyOrWhiteSpace(str) {
-  return !str || !str.trim();
-}
+const logError = err => errField.innerText = `Error: ${err}`;
+
+
+const clearError = ()=> errField.innerText = '';
+
+
+const isEmptyOrWhiteSpace = str => !str || !str.trim();
