@@ -1,19 +1,29 @@
-const form = document.querySelector("form");
-const symbol = document.querySelector(".symbol");
-const date = document.querySelector(".date");
-const open = document.querySelector(".open");
-const max = document.querySelector(".max");
-const close = document.querySelector(".close");
+const form = document.querySelector('form');
+const symbolField = document.querySelector('.symbol');
+const dateField = document.querySelector('.date');
+const openField = document.querySelector('.open');
+const maxField = document.querySelector('.max');
+const lowField = document.querySelector('.low');
+const closeField = document.querySelector('.close');
+const changeField = document.querySelector('.change');
 
-const user = "davidfbergeron";
-const API_KEY = "AHGHSQCQOVT6Z8E0";
+const errorField = document.querySelector('.error');
+
+const API_KEY = 'AHGHSQCQOVT6Z8E0';
+//  const API_STR =
+//    'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=';
 const API_STR =
-  "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=";
+  'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=';
 
-form.addEventListener("submit", e => {
+form.addEventListener('submit', e => {
   e.preventDefault();
+  clearError();
   let stock = form.elements.stock.value;
-  getStockReport(stock);
+  if (isEmptyOrWhiteSpace(stock)) {
+    logError('Input cannot be blank. Please enter a valid stock symbol.');
+  } else {
+    getStockReport(stock);
+  }
 });
 
 function getStockReport(stock) {
@@ -24,18 +34,31 @@ function getStockReport(stock) {
 }
 
 function displayStockReport(stockData) {
-  const { "Meta Data": meta, "Time Series (5min)": stockQuotes } = stockData;
+  const { 'Meta Data': metadata, 'Time Series (5min)': quotes } = stockData;
+  const {
+    ['2. Symbol']: symbol,
+    ['3. Last Refreshed']: latestQuoteTime
+  } = metadata;
 
-  const stockSymbol = meta["2. Symbol"].toUpperCase();
-  console.log(stockSymbol);
-  const latest = meta["3. Last Refreshed"];
-  const quote = stockQuotes[latest];
+  // Our quotes are stored as Key/Value pairs, with the key for each quote
+  // being the time the quote was made.
+  latestQuote = quotes[latestQuoteTime];
+  const {
+    ['1. open']: open,
+    ['2. high']: max,
+    ['3. low']: low,
+    ['4. close']: close
+  } = latestQuote;
+  const change = open - close;
 
-  const quoteDate = latest.split(" ")[0];
-  const open
-
-  symbol.innerText = stockSymbol;
-  date.innerText = quoteDate;
+  // Output our data to the screen.
+  symbolField.innerText = symbol;
+  dateField.innerText = latestQuoteTime;
+  openField.innerText = open;
+  maxField.innerText = max;
+  lowField.innerText = low;
+  closeField.innerText = close;
+  changeField.innerText = change;
 }
 
 function buildStockQuery(stock) {
@@ -44,21 +67,31 @@ function buildStockQuery(stock) {
   return `${API_STR}${stock}&interval=5min&apikey=${API_KEY}`;
 }
 
-// function buildWeatherReport(city) {
-//   weatherLocation.innerText = city.name;
-//   weatherDate.innerText = new Date(city.dt);
-//   weatherConditions.innerText = city.weather[0].description;
+function convertDate(dateStr) {
+  const options = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric'
+  };
+  // let date = Date.parse(dateStr);
+  // return new Date(dateStr).toUTCString();
 
-//   let curTemp = convertKelvinToCelsius(city.main.temp);
-//   weatherTemp.innerText = `${curTemp}°C`;
+  let date = new Date(Date.now());
+  return new Intl.DateTimeFormat('en-US', options).format(date);
+}
 
-//   let { sunrise, sunset } = city.sys;
-//   sunriseTime.innerText = getClockTime(new Date(sunrise));
-//   sunsetTime.innerText = getClockTime(new Date(sunset));
-// }
+function logError(err) {
+  errorField.innerText = err;
+}
 
-function getClockTime(date) {
-  let hours = date.getHours();
-  let mins = date.getMinutes();
-  return `${hours}:${mins}`;
+function clearError() {
+  errorField.innerText = '';
+}
+
+function isEmptyOrWhiteSpace(str) {
+  return !str || !str.trim();
 }
