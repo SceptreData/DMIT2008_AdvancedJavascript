@@ -1,0 +1,29 @@
+{
+  "name": "handlebars-basics",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "compile": "npx babel js/src --out-dir js/dist",
+    "watch": "npx babel js/src --watch --out-dir js/dist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.0.0"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ]
+  }
+}

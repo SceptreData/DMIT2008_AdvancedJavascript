@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>Handlebars Basics Demo</title>
+    <meta name="description" content="" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <link rel="manifest" href="site.webmanifest" />
+    <link rel="apple-touch-icon" href="icon.png" />
+    <!-- Place favicon.ico in the root directory -->
+
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/main.css" />
+  </head>
+
+  <body>
+    <header>
+      <h1>Demonstration of Handlebars Templates</h1>
+    </header>
+    <section class="project"></section>
+
+    <script id="project-template" type="text/x-handlebars-template">
+      <h2 class="project-title">Project: {{title}}</h2>
+            <section class="details">
+              <h3>Details</h3>
+              <ul>
+                <li>Project Start - {{startDate}}</li>
+                <li>Project End - {{endDate}}</li>
+                <!-- use helper to format as currency -->
+                <li>Estimated Budget - {{cash budget}}</li>
+              </ul>
+              <section>
+                <h4>Project Managers</h4>
+                <table class="tbl-managers">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Position</th>
+                      <th>Experience</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {{#each managers}}
+                      <tr>
+                        <td>{{name}}</td>
+                        <td>{{position}}</td>
+                        <td>{{experience}}</td>
+                      </tr>
+                    {{/each}}
+                  </tbody>
+                </table>
+              </section>
+            </section>
+    </script>
+    <script src="js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="js/vendor/handlebars-v4.2.0.js"></script>
+    <script src="js/plugins.js"></script>
+    <script src="js/dist/main.js"></script>
+  </body>
+</html>

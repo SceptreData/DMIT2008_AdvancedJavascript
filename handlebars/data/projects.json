@@ -1,0 +1,38 @@
+[
+  {
+    "title": "The Omega Project",
+    "startDate": "Sep-03-19",
+    "endDate": "Jan-17-20",
+    "budget": 127890,
+    "managers": [
+      {
+        "name": "Jane Doe",
+        "position": "Senior Project Manager",
+        "experience": 14
+      },
+      {
+        "name": "Sally Anne",
+        "position": "Project Manager",
+        "experience": 8
+      }
+    ]
+  },
+  {
+    "title": "Project TWO: You won't believe it's not butter",
+    "startDate": "Sep-03-19",
+    "endDate": "Jan-17-20",
+    "budget": 1000000,
+    "managers": [
+      {
+        "name": "Jim Doe",
+        "position": "Senior Sandwich Artiste",
+        "experience": 14
+      },
+      {
+        "name": "Gunther Hermann",
+        "position": "Junior Skulldugger-er",
+        "experience": 8
+      }
+    ]
+  }
+]
