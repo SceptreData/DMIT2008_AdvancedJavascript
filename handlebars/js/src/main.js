@@ -1,15 +1,18 @@
-let source = document.querySelector("#project-template").innerHTML;
-let template = Handlebars.compile(source);
+// let source = document.querySelector("#project-template").innerHTML;
+// let template = Handlebars.compile(source);
+
 
 Handlebars.registerHelper("cash", str => {
   return str.toLocaleString("en-US", { style: "currency", currency: "USD" });
 });
+
+
+
 const renderProject = proj => {
   let project = document.querySelector(".project");
-  project.innerHTML += template(proj);
-
-  // document.querySelector(".tbl-managers tbody").innerHTML = managers;
+  project.innerHTML += Handlebars.templates['project'](proj);
 };
+
 
 // now, fetch projects and render the first one.
 fetch("data/projects.json")

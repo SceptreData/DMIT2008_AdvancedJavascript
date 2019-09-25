@@ -24,18 +24,22 @@ const changeField = document.querySelector('.change');
 const errField = document.querySelector('.error');
 
 
+// Event that triggers on form submission. Checks for errors in the input, then
+// retrieves the stock report.
 form.addEventListener('submit', e => {
   e.preventDefault();
+
   clearError();
   let stock = form.elements.stock.value;
-  if (isEmptyOrWhiteSpace(stock)) {
-    logError('Input cannot be blank. Please enter a valid stock symbol.');
-  } else {
+  if (isValidInput(stock)){
     getStockReport(stock);
   }
 });
 
-
+/*
+ * Fetch and display out stock report.
+ * @params {string} stock - the stock quote symbol to look up from vantage point.
+ */
 const getStockReport = stock => {
   const query = buildStockQuery(stock);
   fetch(query)
@@ -43,7 +47,10 @@ const getStockReport = stock => {
     .then(stockData => displayStockReport(stockData));
 }
 
-
+/*
+ * This function displays a stock report from provided data.
+ * @param {obj} stockData - The data object we retrieved from the API.
+ */
 const displayStockReport = stockData => {
   const { 'Meta Data': metadata, 'Time Series (5min)': quotes } = stockData;
   const {
@@ -64,7 +71,7 @@ const displayStockReport = stockData => {
 
   // Output our data to the screen, limit to two decimal points.
   symbolField.innerText = symbol.toUpperCase();
-  dateField.innerText = latestQuoteTime;
+  dateField.innerText =  convertDate(latestQuoteTime)
   openField.innerText = Number(open).toFixed(2);
   maxField.innerText = Number(max).toFixed(2);
   lowField.innerText = Number(low).toFixed(2);
@@ -73,33 +80,58 @@ const displayStockReport = stockData => {
 }
 
 
+/*
+ * Convert a date string into a readable format.
+ * @param {string} dateStr -  The date string we want to convert.
+ */
 const convertDate = dateStr => {
   const options = {
-    weekday: 'long',
+    weekday: 'short',
     year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-    second: 'numeric'
+    month: 'short',
+    day: 'numeric'
   };
-  // let date = Date.parse(dateStr);
-  // return new Date(dateStr).toUTCString();
-
-  let date = new Date(Date.now());
+  let date = new Date(dateStr);
   return new Intl.DateTimeFormat('en-US', options).format(date);
 }
 
 
+/*
+ * Builds our API query with string concatenation
+ * @param {string} stock - The stock quote string we want to look up.
+ */
 const buildStockQuery = stock => {
   return `${API_ENDPOINT}${stock}&interval=5min&apikey=${API_KEY}`;
 }
 
 
+/* Validates an input stock string.
+ * @param {string} str - the Stock symbol string to validate.
+ */
+const isValidInput = str => {
+  const isValid = true;
+    if (isEmptyOrWhiteSpace(str)) {
+    logError('Input cannot be blank. Please enter a valid stock symbol.');
+    isValid = false;
+    }
+  else if (containsSpecialChars(str)){
+    logError('Input cannot contain special characters. Enter a valid Stock symbol.')
+    isValid = false;
+    }
+
+    return isValid;
+  }
+/*
+ * Logs Errors.
+ * @param {string} err - Error message to display
+ */
 const logError = err => errField.innerText = `Error: ${err}`;
 
 
+// Clears our Error field.
 const clearError = ()=> errField.innerText = '';
 
+const containsSpecialChars = str => !str.match(/^[a-z0-9.]+$/i);
 
+//  Returns whether or not a str is empty or only whitespace.
 const isEmptyOrWhiteSpace = str => !str || !str.trim();
