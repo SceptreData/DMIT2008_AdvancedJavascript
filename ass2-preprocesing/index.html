@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html class="no-js" lang="">
+  <head>
+    <meta charset="utf-8" />
+    <title>1337 Stock Ticker - David Bergeron</title>
+    <meta
+      name="description"
+      content="A simple stock ticker app that queries the Alpha Vantage API"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="manifest" href="site.webmanifest" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat:400,600&display=swap"
+      rel="stylesheet"
+    />
+
+    <meta name="theme-color" content="#fafafa" />
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Stock Ticker</h1>
+      <form class="stock-ticker">
+        <label for="stock">Stock</label>
+        <input type="text" id="stock" name="stock" />
+        <button type="submit">Get Stock</button>
+        <div class="error"></div>
+      </form>
+      <hr>
+
+
+      <section class="stock-display">
+        <div class="details">Symbol: <span class="symbol"></span></div>
+        <div class="details">Date: <span class="date"></span></div>
+        <div class="details">Open: <span class="open"></span></div>
+        <div class="details">Highest: <span class="max"></span></div>
+        <div class="details">Lowest: <span class="low"></span></div>
+        <div class="details">Close: <span class="close"></span></div>
+        <div class="details">Change: <span class="change"></span></div>
+      </section>
+
+
+      <script src="js/vendor/modernizr-3.7.1.min.js"></script>
+      <script src="js/vendor/handlebars.min-v4.4.0.js"></script>
+      <script src="js/dist/stocker-template.js"></script>
+      <script src="js/plugins.js"></script>
+      <script src="js/src/main.js"></script>
+    </div>
+  </body>
+</html>
