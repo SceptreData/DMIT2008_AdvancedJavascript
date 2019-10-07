@@ -7,18 +7,10 @@
 
 const API_KEY = 'AHGHSQCQOVT6Z8E0';
 const API_ENDPOINT =
-  'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=';
+  'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=';
+  // 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=';
 
 const form = document.querySelector('form');
-
-// Grab all the divs we will use to display stock info.
-const symbolField = document.querySelector('.symbol');
-const dateField = document.querySelector('.date');
-const openField = document.querySelector('.open');
-const maxField = document.querySelector('.max');
-const lowField = document.querySelector('.low');
-const closeField = document.querySelector('.close');
-const changeField = document.querySelector('.change');
 
 // Create a field to display errors.
 const errField = document.querySelector('.error');
@@ -36,11 +28,13 @@ form.addEventListener('submit', e => {
   }
 });
 
+
 const renderProject = proj => {
   let project = document.querySelector('.stocker')
   project.innerHTML += Handlebars.templates['stocker'](proj)
 }
-renderProject({})
+
+
 /*
  * Fetch and display out stock report.
  * @params {string} stock - the stock quote symbol to look up from vantage point.
@@ -52,20 +46,24 @@ const getStockReport = stock => {
     .then(stockData => displayStockReport(stockData));
 }
 
+
 /*
  * This function displays a stock report from provided data.
  * @param {obj} stockData - The data object we retrieved from the API.
  */
 const displayStockReport = stockData => {
-  const { 'Meta Data': metadata, 'Time Series (5min)': quotes } = stockData;
+  console.log(stockData)
+  const { 'Meta Data': metadata, 'Time Series (Daily)': quotes } = stockData;
   const {
     ['2. Symbol']: symbol,
     ['3. Last Refreshed']: latestQuoteTime
   } = metadata;
 
+  console.log(quotes)
+
   // Our quotes are stored as Key/Value pairs, with the key for each quote
   // being the time the quote was made.
-  latestQuote = quotes[latestQuoteTime];
+  const latestQuote = quotes[latestQuoteTime];
   const {
     ['1. open']: open,
     ['2. high']: max,

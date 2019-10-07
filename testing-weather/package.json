@@ -1,0 +1,28 @@
+{
+  "name": "weather-app-end-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "babel": "npx babel js/src/ --out-dir js/dist/ --ignore \"js/src/**/*.handlebars\"",
+    "watch": "npx babel js/src/ --out-dir js/dist/ --ignore \"js/src/**/*.handlebars\" --watch",
+    "handlebars": "npx handlebars js/src/templates/ -f js/dist/templates.js -k each",
+    "build": "npm run babel && npm run handlebars"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.6.0",
+    "@babel/core": "^7.6.0",
+    "@babel/preset-env": "^7.6.0",
+    "handlebars": "^4.3.1"
+  },
+  "babel": {
+    "presets": [
+      ["@babel/preset-env",
+        {"modules": false}
+      ]
+    ]
+  }
+}

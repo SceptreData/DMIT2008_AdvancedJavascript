@@ -9,16 +9,9 @@ function _readOnlyError(name) { throw new Error("\"" + name + "\" is read-only")
  * David Bergeron
  */
 var API_KEY = 'AHGHSQCQOVT6Z8E0';
-var API_ENDPOINT = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=';
-var form = document.querySelector('form'); // Grab all the divs we will use to display stock info.
+var API_ENDPOINT = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol='; // 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=';
 
-var symbolField = document.querySelector('.symbol');
-var dateField = document.querySelector('.date');
-var openField = document.querySelector('.open');
-var maxField = document.querySelector('.max');
-var lowField = document.querySelector('.low');
-var closeField = document.querySelector('.close');
-var changeField = document.querySelector('.change'); // Create a field to display errors.
+var form = document.querySelector('form'); // Create a field to display errors.
 
 var errField = document.querySelector('.error'); // Event that triggers on form submission. Checks for errors in the input, then
 // retrieves the stock report.
@@ -32,10 +25,16 @@ form.addEventListener('submit', function (e) {
     getStockReport(stock);
   }
 });
+
+var renderProject = function renderProject(proj) {
+  var project = document.querySelector('.stocker');
+  project.innerHTML += Handlebars.templates['stocker'](proj);
+};
 /*
  * Fetch and display out stock report.
  * @params {string} stock - the stock quote symbol to look up from vantage point.
  */
+
 
 var getStockReport = function getStockReport(stock) {
   var query = buildStockQuery(stock);
@@ -52,18 +51,19 @@ var getStockReport = function getStockReport(stock) {
 
 
 var displayStockReport = function displayStockReport(stockData) {
+  console.log(stockData);
   var metadata = stockData['Meta Data'],
-      quotes = stockData['Time Series (5min)'];
+      quotes = stockData['Time Series (Daily)'];
   var symbol = metadata['2. Symbol'],
-      latestQuoteTime = metadata['3. Last Refreshed']; // Our quotes are stored as Key/Value pairs, with the key for each quote
+      latestQuoteTime = metadata['3. Last Refreshed'];
+  console.log(quotes); // Our quotes are stored as Key/Value pairs, with the key for each quote
   // being the time the quote was made.
 
-  latestQuote = quotes[latestQuoteTime];
-  var _latestQuote = latestQuote,
-      open = _latestQuote['1. open'],
-      max = _latestQuote['2. high'],
-      low = _latestQuote['3. low'],
-      close = _latestQuote['4. close'];
+  var latestQuote = quotes[latestQuoteTime];
+  var open = latestQuote['1. open'],
+      max = latestQuote['2. high'],
+      low = latestQuote['3. low'],
+      close = latestQuote['4. close'];
   var change = open - close; // Output our data to the screen, limit to two decimal points.
 
   symbolField.innerText = symbol.toUpperCase();

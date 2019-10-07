@@ -8,7 +8,7 @@
     "compile": "npm run makeBabel && npm run stylus",
     "stylus": "npx stylus styl/style.styl -o css/style.css",
     "watch": "npm run stylus && npx stylus -w styl/ -o css/",
-    "handlebars": "npx handlebars js/src/templates/stocker.handlebars -f js/dist/stocker-template.js",
+    "handlebars": "npx handlebars js/src/templates/stock.handlebars -f js/dist/stock-template.js",
     "build": "npm run compile && npm run handlebars"
   },
   "keywords": [],
