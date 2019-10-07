@@ -1,0 +1,9 @@
+<ul class="five-day-report">
+  {{#each report}}
+    <li>
+      <div class="report-datek"><span>{{this.date.day}}</span>{{this.date.month}}</div>
+      <div class="report-open">{{this.open}}</div>
+      <div class="report-close" >{{this.close}}</div>
+    </li>
+  {{/each}}
+</ul>
