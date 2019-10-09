@@ -15,8 +15,23 @@ const form = document.querySelector('form');
 // Create a field to display errors.
 const errField = document.querySelector('.error');
 
-console.log(Handlebars.templates);
 Handlebars.registerPartial('history', Handlebars.templates['history']);
+
+Handlebars.registerHelper("cash", str => {
+  const cashVal = parseFloat(str)
+  return  cashVal.toLocaleString("en-US", {style: "currency", currency: "USD"})
+})
+
+Handlebars.registerHelper("day", dateStr => {
+  const date = new Date(dateStr);
+  return (date.getDate() < 10 ? '0' : '') + date.getDate()
+})
+
+Handlebars.registerHelper("month", dateStr => {
+  const date = new Date(dateStr);
+  return date.toLocaleDateString('default', {month: 'short'});
+})
+
 // Event that triggers on form submission. Checks for errors in the input, then
 // retrieves the stock report.
 form.addEventListener('submit', e => {
@@ -29,10 +44,17 @@ form.addEventListener('submit', e => {
   }
 });
 
+
+
 const renderReport = stocks => {
-  let report = document.querySelector('.stock-display');
-  console.log(Handlebars.templates);
+  let report = document.querySelector('.stock-report');
   report.innerHTML += Handlebars.templates['stock'](stocks);
+
+  const btn = report.querySelector('.reveal-history-btn')
+  btn.addEventListener('click', e => {
+    e.preventDefault()
+    document.querySelector('.five-day-report').classList.toggle('hidden')
+  })
 };
 
 /*

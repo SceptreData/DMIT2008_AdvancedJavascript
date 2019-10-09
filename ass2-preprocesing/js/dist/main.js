@@ -17,11 +17,32 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var API_KEY = 'AHGHSQCQOVT6Z8E0';
 var API_ENDPOINT = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol='; // 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=';
 
-var form = document.querySelector('form'); // Create a field to display errors.
+var form = document.querySelector('form');
+var historyBtn = document.querySelector('.reveal-history-btn'); // Create a field to display errors.
 
 var errField = document.querySelector('.error');
-console.log(Handlebars.templates);
-Handlebars.registerPartial('history', Handlebars.templates['history']); // Event that triggers on form submission. Checks for errors in the input, then
+Handlebars.registerPartial('history', Handlebars.templates['history']);
+Handlebars.registerHelper("cash", function (str) {
+  var cashVal = parseFloat(str);
+  return cashVal.toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD"
+  });
+});
+Handlebars.registerHelper("day", function (dateStr) {
+  var date = new Date(dateStr);
+  return (date.getDate() < 10 ? '0' : '') + date.getDate();
+});
+Handlebars.registerHelper("month", function (dateStr) {
+  var date = new Date(dateStr);
+  return date.toLocaleDateString('default', {
+    month: 'short'
+  });
+});
+historyBtn.addEventListener('click', function (e) {
+  e.preventDefault();
+  document.querySelector('.five-day-report').classList.toggle('hidden');
+}); // Event that triggers on form submission. Checks for errors in the input, then
 // retrieves the stock report.
 
 form.addEventListener('submit', function (e) {
@@ -35,8 +56,7 @@ form.addEventListener('submit', function (e) {
 });
 
 var renderReport = function renderReport(stocks) {
-  var report = document.querySelector('.stock-display');
-  console.log(Handlebars.templates);
+  var report = document.querySelector('.stock-report');
   report.innerHTML += Handlebars.templates['stock'](stocks);
 };
 /*

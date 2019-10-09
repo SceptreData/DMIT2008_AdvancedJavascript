@@ -1,7 +1,8 @@
 {{#each history}}
-<li>
-  <div class="report-date"><span>{{date}}</span></div>
-  <div class="report-open">{{open}}</div>
-  <div class="report-close">{{close}}</div>
+<li class="history-item">
+  <div class="report-date">{{day date}}<span>{{month date}}</span></div>
+  <div class="report-open">Open: <span>{{cash open}}</span></div>
+  <div class="report-close">Close: <span>{{cash close}}</span></div>
+  <div class="report-change">Change: <span>{{cash change}}</span></div>
 </li>
 {{/each}}
