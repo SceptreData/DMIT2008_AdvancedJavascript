@@ -1,137 +1,165 @@
-/*
- * DMIT-2008 Advanced Javascript
- * Assignment 1
- * 
- * David Bergeron
- */
+(function () {
+  "use strict";
 
-const API_KEY = 'AHGHSQCQOVT6Z8E0';
-const API_ENDPOINT =
-  'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=';
+  function _readOnlyError(name) { throw new Error("\"" + name + "\" is read-only"); }
 
-const form = document.querySelector('form');
+  /*
+   * DMIT-2008 Advanced Javascript
+   * Assignment 1
+   * STOCK TICKER
+   *
+   * David Bergeron
+   */
+  var API_KEY = 'AHGHSQCQOVT6Z8E0';
+  var API_ENDPOINT = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=';
+  var form = document.querySelector('form'); // Grab all the divs we will use to display stock info.
 
-// Grab all the divs we will use to display stock info.
-const symbolField = document.querySelector('.symbol');
-const dateField = document.querySelector('.date');
-const openField = document.querySelector('.open');
-const maxField = document.querySelector('.max');
-const lowField = document.querySelector('.low');
-const closeField = document.querySelector('.close');
-const changeField = document.querySelector('.change');
+  var symbolField = document.querySelector('.symbol');
+  var dateField = document.querySelector('.date');
+  var openField = document.querySelector('.open');
+  var maxField = document.querySelector('.max');
+  var lowField = document.querySelector('.low');
+  var closeField = document.querySelector('.close');
+  var changeField = document.querySelector('.change'); // Create a field to display errors.
 
-// Create a field to display errors.
-const errField = document.querySelector('.error');
+  var errField = document.querySelector('.error');
+  /*
+   * Register Event listener for the submit event.
+   */
 
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    resetForm();
+    var stock = form.elements.stock.value;
 
-// Event that triggers on form submission. Checks for errors in the input, then
-// retrieves the stock report.
-form.addEventListener('submit', e => {
-  e.preventDefault();
-
-  clearError();
-  let stock = form.elements.stock.value;
-  if (isValidInput(stock)){
-    getStockReport(stock);
-  }
-});
-
-/*
- * Fetch and display out stock report.
- * @params {string} stock - the stock quote symbol to look up from vantage point.
- */
-const getStockReport = stock => {
-  const query = buildStockQuery(stock);
-  fetch(query)
-    .then(res => res.json())
-    .then(stockData => displayStockReport(stockData));
-}
-
-/*
- * This function displays a stock report from provided data.
- * @param {obj} stockData - The data object we retrieved from the API.
- */
-const displayStockReport = stockData => {
-  const { 'Meta Data': metadata, 'Time Series (5min)': quotes } = stockData;
-  const {
-    ['2. Symbol']: symbol,
-    ['3. Last Refreshed']: latestQuoteTime
-  } = metadata;
-
-  // Our quotes are stored as Key/Value pairs, with the key for each quote
-  // being the time the quote was made.
-  latestQuote = quotes[latestQuoteTime];
-  const {
-    ['1. open']: open,
-    ['2. high']: max,
-    ['3. low']: low,
-    ['4. close']: close
-  } = latestQuote;
-  const change = open - close;
-
-  // Output our data to the screen, limit to two decimal points.
-  symbolField.innerText = symbol.toUpperCase();
-  dateField.innerText =  convertDate(latestQuoteTime)
-  openField.innerText = Number(open).toFixed(2);
-  maxField.innerText = Number(max).toFixed(2);
-  lowField.innerText = Number(low).toFixed(2);
-  closeField.innerText = Number(close).toFixed(2);
-  changeField.innerText = change.toFixed(2);
-}
-
-
-/*
- * Convert a date string into a readable format.
- * @param {string} dateStr -  The date string we want to convert.
- */
-const convertDate = dateStr => {
-  const options = {
-    weekday: 'short',
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric'
-  };
-  let date = new Date(dateStr);
-  return new Intl.DateTimeFormat('en-US', options).format(date);
-}
-
-
-/*
- * Builds our API query with string concatenation
- * @param {string} stock - The stock quote string we want to look up.
- */
-const buildStockQuery = stock => {
-  return `${API_ENDPOINT}${stock}&interval=5min&apikey=${API_KEY}`;
-}
-
-
-/* Validates an input stock string.
- * @param {string} str - the Stock symbol string to validate.
- */
-const isValidInput = str => {
-  const isValid = true;
-    if (isEmptyOrWhiteSpace(str)) {
-    logError('Input cannot be blank. Please enter a valid stock symbol.');
-    isValid = false;
+    if (isValidInput(stock)) {
+      getStockReport(stock);
     }
-  else if (containsSpecialChars(str)){
-    logError('Input cannot contain special characters. Enter a valid Stock symbol.')
-    isValid = false;
+  });
+  /*
+   * Fetch and display our stock report.
+   * @params {string} stock - the stock quote symbol to look up from vantage point.
+   */
+
+  var getStockReport = function getStockReport(stock) {
+    var query = buildStockQuery(stock);
+    fetch(query).then(function (res) {
+      return res.json();
+    }).then(function (stockData) {
+      if (stockData['Error Message']) {
+        logError('Invalid Symbol. Please enter a valid stock symbol.');
+      } else {
+        displayStockReport(stockData);
+      }
+    });
+  };
+  /*
+   * This function displays a stock report from provided data.
+   * @param {obj} stockData - The data object we retrieved from the API.
+   */
+
+
+  var displayStockReport = function displayStockReport(stockData) {
+    var metadata = stockData['Meta Data'],
+        quotes = stockData['Time Series (5min)'];
+    var symbol = metadata['2. Symbol'],
+        latestQuoteTime = metadata['3. Last Refreshed']; // quotes are stored as Key/Value pairs, with the key for each quote
+    // being the time the quote was made.
+
+    latestQuote = quotes[latestQuoteTime];
+    var _latestQuote = latestQuote,
+        open = _latestQuote['1. open'],
+        max = _latestQuote['2. high'],
+        low = _latestQuote['3. low'],
+        close = _latestQuote['4. close'];
+    var change = open - close; // Output our data to the screen, limit to two decimal points.
+
+    symbolField.innerText = symbol.toUpperCase();
+    dateField.innerText = convertDate(latestQuoteTime);
+    openField.innerText = "$".concat(Number(open).toFixed(2));
+    maxField.innerText = "$".concat(Number(max).toFixed(2));
+    lowField.innerText = "$".concat(Number(low).toFixed(2));
+    closeField.innerText = "$".concat(Number(close).toFixed(2));
+    changeField.innerText = "$".concat(change.toFixed(2));
+  };
+  /*
+   * Builds our API query with string concatenation
+   * @param {string} stock - The stock quote string we want to look up.
+   */
+
+
+  var buildStockQuery = function buildStockQuery(stock) {
+    return "".concat(API_ENDPOINT).concat(stock, "&interval=5min&apikey=").concat(API_KEY);
+  };
+  /* Validates an input stock string.
+   * @param {string} str - the Stock symbol string to validate.
+   */
+
+
+  var isValidInput = function isValidInput(str) {
+    var isValid = true;
+
+    if (isEmptyOrWhiteSpace(str)) {
+      logError('Input cannot be blank. Please enter a valid stock symbol.');
+      isValid = (_readOnlyError("isValid"), false);
+    } else if (containsSpecialChars(str)) {
+      logError('Input cannot contain special characters. Enter a valid Stock symbol.');
+      isValid = (_readOnlyError("isValid"), false);
     }
 
     return isValid;
-  }
-/*
- * Logs Errors.
- * @param {string} err - Error message to display
- */
-const logError = err => errField.innerText = `Error: ${err}`;
+  }; // Resets our form to initial state.
 
 
-// Clears our Error field.
-const clearError = ()=> errField.innerText = '';
+  var resetForm = function resetForm() {
+    clearError();
+    clearForm();
+  };
+  /*
+   * Convert a date string into a readable format.
+   * @param {string} dateStr -  The date string we want to convert.
+   */
 
-const containsSpecialChars = str => !str.match(/^[a-z0-9.]+$/i);
 
-//  Returns whether or not a str is empty or only whitespace.
-const isEmptyOrWhiteSpace = str => !str || !str.trim();
+  var convertDate = function convertDate(dateStr) {
+    var options = {
+      weekday: 'short',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    };
+    var date = new Date(dateStr);
+    return new Intl.DateTimeFormat('en-US', options).format(date);
+  };
+  /*
+   * Logs Errors.
+   * @param {string} err - Error message to display
+   */
+
+
+  var logError = function logError(err) {
+    return errField.innerText = "Error: ".concat(err);
+  }; // Clears our Error field.
+
+
+  var clearError = function clearError() {
+    return errField.innerText = '';
+  }; // Clear out our form
+
+
+  var clearForm = function clearForm() {
+    var spans = Array.from(document.querySelectorAll('.details span'));
+    spans.map(function (span) {
+      return span.innerText = '';
+    });
+  };
+
+  var containsSpecialChars = function containsSpecialChars(str) {
+    return !str.match(/^[a-z0-9.]+$/i);
+  }; //  Returns whether or not a str is empty or only whitespace.
+
+
+  var isEmptyOrWhiteSpace = function isEmptyOrWhiteSpace(str) {
+    return !str || !str.trim();
+  };
+})();

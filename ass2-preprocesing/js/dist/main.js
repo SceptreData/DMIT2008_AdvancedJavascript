@@ -2,10 +2,16 @@
 
 function _readOnlyError(name) { throw new Error("\"" + name + "\" is read-only"); }
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 /*
  * DMIT-2008 Advanced Javascript
  * Assignment 1
- * 
+ *
  * David Bergeron
  */
 var API_KEY = 'AHGHSQCQOVT6Z8E0';
@@ -13,7 +19,9 @@ var API_ENDPOINT = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY
 
 var form = document.querySelector('form'); // Create a field to display errors.
 
-var errField = document.querySelector('.error'); // Event that triggers on form submission. Checks for errors in the input, then
+var errField = document.querySelector('.error');
+console.log(Handlebars.templates);
+Handlebars.registerPartial('history', Handlebars.templates['history']); // Event that triggers on form submission. Checks for errors in the input, then
 // retrieves the stock report.
 
 form.addEventListener('submit', function (e) {
@@ -26,9 +34,10 @@ form.addEventListener('submit', function (e) {
   }
 });
 
-var renderProject = function renderProject(proj) {
-  var project = document.querySelector('.stocker');
-  project.innerHTML += Handlebars.templates['stocker'](proj);
+var renderReport = function renderReport(stocks) {
+  var report = document.querySelector('.stock-display');
+  console.log(Handlebars.templates);
+  report.innerHTML += Handlebars.templates['stock'](stocks);
 };
 /*
  * Fetch and display out stock report.
@@ -44,6 +53,39 @@ var getStockReport = function getStockReport(stock) {
     return displayStockReport(stockData);
   });
 };
+
+var buildStockObj = function buildStockObj(date, stock) {
+  var open = stock['1. open'],
+      max = stock['2. high'],
+      low = stock['3. low'],
+      close = stock['4. close'];
+  var change = open - close;
+  return {
+    date: date,
+    open: open,
+    max: max,
+    low: low,
+    close: close,
+    change: change
+  };
+};
+
+var parseStockQuotes = function parseStockQuotes(symbol, quotes, n) {
+  var sortedKeys = Object.keys(quotes).sort(function (a, b) {
+    return new Date(b) - new Date(a);
+  });
+  var parsedQuotes = [];
+
+  for (var i = 0; i < n; i++) {
+    var date = sortedKeys[i];
+    var stock = quotes[date];
+    var stockObj = buildStockObj(date, stock);
+    stockObj.symbol = symbol;
+    parsedQuotes.push(stockObj);
+  }
+
+  return parsedQuotes;
+};
 /*
  * This function displays a stock report from provided data.
  * @param {obj} stockData - The data object we retrieved from the API.
@@ -51,28 +93,22 @@ var getStockReport = function getStockReport(stock) {
 
 
 var displayStockReport = function displayStockReport(stockData) {
-  console.log(stockData);
   var metadata = stockData['Meta Data'],
       quotes = stockData['Time Series (Daily)'];
   var symbol = metadata['2. Symbol'],
       latestQuoteTime = metadata['3. Last Refreshed'];
-  console.log(quotes); // Our quotes are stored as Key/Value pairs, with the key for each quote
-  // being the time the quote was made.
-
-  var latestQuote = quotes[latestQuoteTime];
-  var open = latestQuote['1. open'],
-      max = latestQuote['2. high'],
-      low = latestQuote['3. low'],
-      close = latestQuote['4. close'];
-  var change = open - close; // Output our data to the screen, limit to two decimal points.
-
-  symbolField.innerText = symbol.toUpperCase();
-  dateField.innerText = convertDate(latestQuoteTime);
-  openField.innerText = Number(open).toFixed(2);
-  maxField.innerText = Number(max).toFixed(2);
-  lowField.innerText = Number(low).toFixed(2);
-  closeField.innerText = Number(close).toFixed(2);
-  changeField.innerText = change.toFixed(2);
+  var history = parseStockQuotes(symbol, quotes, 6);
+  var latestQuote = history.shift();
+  renderReport(_objectSpread({}, latestQuote, {
+    history: history
+  })); // Output our data to the screen, limit to two decimal points.
+  // symbolField.innerText = symbol.toUpperCase();
+  // dateField.innerText = convertDate(latestQuoteTime);
+  // openField.innerText = Number(open).toFixed(2);
+  // maxField.innerText = Number(max).toFixed(2);
+  // lowField.innerText = Number(low).toFixed(2);
+  // closeField.innerText = Number(close).toFixed(2);
+  // changeField.innerText = change.toFixed(2);
 };
 /*
  * Convert a date string into a readable format.

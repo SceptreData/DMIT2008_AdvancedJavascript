@@ -1,9 +1,13 @@
 <div class="stock-display">
-    <div class="details">Symbol: <span class="symbol">{{symbol}}</span></div>
-    <div class="details">Date: <span class="date">{{date}}</span></div>
-    <div class="details">Open: <span class="open">{{open}}</span></div>
-    <div class="details">Highest: <span class="max">{{max}}</span></div>
-    <div class="details">Lowest: <span class="low">{{low}}</span></div>
-    <div class="details">Close: <span class="close">{{close}}</span></div>
-    <div class="details">Change: <span class="change">{{change}}</span></div>
+  <div class="details">Symbol: <span class="symbol">{{symbol}}</span></div>
+  <div class="details">Date: <span class="date">{{date}}</span></div>
+  <div class="details">Open: <span class="open">{{open}}</span></div>
+  {{!-- <div class="details">Highest: <span class="max">{{max}}</span></div> --}}
+  {{!-- <div class="details">Lowest: <span class="low">{{low}}</span></div> --}}
+  <div class="details">Close: <span class="close">{{close}}</span></div>
+  {{!-- <div class="details">Change: <span class="change">{{change}}</span></div> --}}
 </div>
+
+<ul class="five-day-report">
+  {{> history}}
+</ul>
