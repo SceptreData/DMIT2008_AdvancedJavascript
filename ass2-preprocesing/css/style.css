@@ -235,6 +235,7 @@ a:visited:hover {
   cursor: pointer;
   outline: none;
   position: relative;
+  margin-left: auto;
 }
 .reveal-history-btn:hover {
   background: #fff;
@@ -262,6 +263,29 @@ a:visited:hover {
   width: 100%;
   transition: 800ms ease all;
 }
+.container {
+  max-width: 500px;
+  margin: 3rem auto;
+  padding: 2rem 1rem;
+  background: rgba(255,255,255,0.192);
+  border-radius: 4px;
+}
+.stock-ticker {
+  padding-top: 1rem;
+  margin: 0 auto;
+  max-width: 400px;
+}
+.stock-display {
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+}
+.details {
+  line-height: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 html {
   background: #747785;
   color: #f5f5f5;
@@ -271,11 +295,6 @@ h1 {
   font-weight: 600;
   margin-bottom: 0;
   padding-left: 3rem;
-}
-.stock-ticker {
-  padding-top: 1rem;
-  margin: 0 auto;
-  max-width: 400px;
 }
 span {
   font-size: 2rem;
@@ -287,16 +306,6 @@ body {
 hr {
   margin-bottom: 2rem;
 }
-.stock-display {
-  max-width: 400px;
-  margin: 0 auto;
-}
-.details {
-  line-height: 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
 .error {
   margin-top: 1rem;
 /* padding: 1rem; */
@@ -304,13 +313,6 @@ hr {
   color: #f00;
   background: rgba(239,239,240,0.521);
   font-weight: 600;
-}
-.container {
-  max-width: 500px;
-  margin: 3rem auto;
-  padding: 2rem 1rem;
-  background: rgba(255,255,255,0.192);
-  border-radius: 4px;
 }
 .hidden {
   display: none;

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "makeBabel": "npx babel js/src --out-dir js/dist",
+    "makeBabel": "npx babel js/src --out-dir js/dist --plugins=babel-plugin-transform-modules-iife",
     "compile": "npm run makeBabel && npm run stylus",
     "stylus": "npx stylus styl/style.styl -o css/style.css",
     "watch": "npm run stylus && npx stylus -w styl/ -o css/",
@@ -18,14 +18,16 @@
     "@babel/cli": "^7.6.2",
     "@babel/core": "^7.6.2",
     "handlebars": "^4.4.0",
-    "stylus": "^0.54.7"
-  },
-  "dependencies": {
-    "@babel/preset-env": "^7.6.2"
+    "stylus": "^0.54.7",
+    "@babel/preset-env": "^7.6.3",
+    "babel-plugin-transform-modules-iife": "^1.0.0"
   },
   "babel": {
     "presets": [
       "@babel/preset-env"
+    ],
+    "plugins": [
+      "babel-plugin-transform-modules-iife"
     ]
   }
 }
