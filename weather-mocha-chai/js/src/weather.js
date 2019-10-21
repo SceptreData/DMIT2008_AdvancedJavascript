@@ -1,5 +1,5 @@
 // private internal constant properties
-const API_KEY = 'YOUR_API_KEY_HERE';
+const API_KEY = "97960d8c86f9f5dff085d503974d3063";
 const ENDPOINT = 'https://api.openweathermap.org/data/2.5/';
 
 /**
