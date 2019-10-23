@@ -1,0 +1,12 @@
+<h1>Weather Update</h1>
+<div class="details">Location: {{location}}</div>
+<div class="details">Date: {{date}}</div>
+<div class="details">Conditions: {{conditions}}</div>
+<div class="details">Current Temp: {{temp}}</div>
+<div class="details">Sunrise: {{sunrise}}</div>
+<div class="details">Sunset: {{sunset}}</div>
+{{#if forecast}}
+<div class="forecast">
+    {{> forecast}}
+</div>
+{{/if}}
