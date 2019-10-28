@@ -4,8 +4,7 @@
  * David Bergeron
  */
 var API_KEY = 'AHGHSQCQOVT6Z8E0';
-var ENDPOINT = 'https://www.alphavantage.co/query?function='; // const HistoryTemplate = Handlebars.templates['History']
-
+var ENDPOINT = 'https://www.alphavantage.co/query?function=';
 /*
  * Represents a Stock object that can fetch and render Stock data.
  * @constructor
@@ -17,7 +16,6 @@ var ENDPOINT = 'https://www.alphavantage.co/query?function='; // const HistoryTe
 var Stock = function Stock(opts) {
   this.symbol = '';
   this.stockData = {};
-  this.history = [];
 
   if (opts) {
     Object.assign(this, opts);
@@ -44,30 +42,59 @@ Stock.prototype.getStock = function () {
 
     var _data$GlobalQuote = data['Global Quote'],
         symbol = _data$GlobalQuote['01. symbol'],
-        open = _data$GlobalQuote['02. open'],
-        high = _data$GlobalQuote['03. high'],
-        low = _data$GlobalQuote['04. low'],
         price = _data$GlobalQuote['05. price'],
-        date = _data$GlobalQuote['07. latest trading day'],
-        change = _data$GlobalQuote['09. change'];
+        date = _data$GlobalQuote['07. latest trading day'];
     return Object.assign(_this.stockData, {
       symbol: symbol,
-      open: open,
-      high: high,
-      low: low,
       price: price,
-      date: date,
-      change: change
+      date: date
     });
   })["catch"](function (err) {
     alert("There was an error: ".concat(err));
   });
 };
 
-Stock.prototype.render = function (targetElt) {
-  var StockTemplate = Handlebars.templates['stock-current'];
-  this.getStock().then(function (stockData) {
-    targetElt.innerHTML = StockTemplate(stockData);
+Stock.prototype.getHistory = function () {
+  var _this2 = this;
+
+  return fetch("".concat(ENDPOINT, "TIME_SERIES_DAILY&symbol=").concat(this.symbol, "&apikey=").concat(API_KEY)).then(function (response) {
+    return response.json();
+  }).then(function (data) {
+    // log and export all data
+    if (data['Error Message']) {
+      throw new Error("There was an error fulfilling your request. Be sure you've entered a valid symbol");
+    } // send only the most recent 5 days of data
+
+
+    var fiveDays = Object.entries(data['Time Series (Daily)']).slice(0, 5);
+    var history = fiveDays.map(function (day) {
+      var _day$ = day[1],
+          open = _day$['1. open'],
+          high = _day$['2. high'],
+          low = _day$['3. low'],
+          close = _day$['4. close'];
+      return {
+        open: open,
+        high: high,
+        low: low,
+        close: close,
+        date: day[0]
+      };
+    });
+    return Object.assign(_this2.stockData, {
+      history: history
+    });
+  })["catch"](function (err) {
+    console.log(err);
+    alert("There was an error: ".concat(err));
+  });
+};
+
+Stock.prototype.getCurrentAndFiveDayHistory = function () {
+  var _this3 = this;
+
+  return this.getStock().then(function () {
+    return _this3.getHistory();
   });
 };
 

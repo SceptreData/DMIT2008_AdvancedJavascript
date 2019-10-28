@@ -9,7 +9,7 @@ templates['stock-current'] = template({"compiler":[8,">= 4.3.0"],"main":function
     + alias5(((helper = (helper = helpers.date || (depth0 != null ? depth0.date : depth0)) != null ? helper : alias3),(typeof helper === alias4 ? helper.call(alias2,{"name":"date","hash":{},"data":data}) : helper)))
     + "</div>\n<div class=\"details\">price: "
     + alias5(((helper = (helper = helpers.price || (depth0 != null ? depth0.price : depth0)) != null ? helper : alias3),(typeof helper === alias4 ? helper.call(alias2,{"name":"price","hash":{},"data":data}) : helper)))
-    + "</div>\n<div><button class=\"btn-history\">Previous 5 Days</button></div>\n<div class=\"history\"></div>";
+    + "</div>\n<div><button class=\"btn-history\">Previous 5 Days</button></div>\n<div class=\"history hidden\"></div>";
 },"useData":true});
 templates['stock-history'] = template({"1":function(container,depth0,helpers,partials,data) {
     var helper, alias1=container.propertyIsEnumerable, alias2=depth0 != null ? depth0 : (container.nullContext || {}), alias3=container.hooks.helperMissing, alias4="function", alias5=container.escapeExpression;
