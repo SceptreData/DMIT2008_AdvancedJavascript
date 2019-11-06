@@ -1,8 +1,8 @@
-var API_KEY = 'YOUR_API_KEY_HERE';
-var ENDPOINT = 'https://www.alphavantage.co/query?function=';
+var API_KEY = "AHGHSQCQOVT6Z8E0";
+var ENDPOINT = "https://www.alphavantage.co/query?function=";
 
 var Stock = function Stock(attrs) {
-  this.symbol = '';
+  this.symbol = "";
   this.stockData = {};
 
   if (attrs) {
@@ -22,14 +22,14 @@ Stock.prototype.getStockPrice = function () {
     return response.json();
   }).then(function (data) {
     // log and export all data
-    if (data['Error Message']) {
+    if (data["Error Message"]) {
       throw new Error("There was an error fulfilling your request. Be sure you've entered a valid symbol");
     }
 
-    var _data$GlobalQuote = data['Global Quote'],
-        symbol = _data$GlobalQuote['01. symbol'],
-        price = _data$GlobalQuote['05. price'],
-        date = _data$GlobalQuote['07. latest trading day'];
+    var _data$GlobalQuote = data["Global Quote"],
+        symbol = _data$GlobalQuote["01. symbol"],
+        price = _data$GlobalQuote["05. price"],
+        date = _data$GlobalQuote["07. latest trading day"];
     return Object.assign(_this.stockData, {
       symbol: symbol,
       price: price,
@@ -47,17 +47,17 @@ Stock.prototype.getStockFiveDayHistory = function () {
     return response.json();
   }).then(function (data) {
     // log and export all data
-    if (data['Error Message']) {
+    if (data["Error Message"]) {
       throw new Error("There was an error fulfilling your request. Be sure you've entered a valid symbol");
     } // send only the most recent 5 days of data
 
 
-    _this2.stockData.history = Object.entries(data['Time Series (Daily)']).slice(0, 5).map(function (day) {
+    _this2.stockData.history = Object.entries(data["Time Series (Daily)"]).slice(0, 5).map(function (day) {
       var _day$ = day[1],
-          open = _day$['1. open'],
-          high = _day$['2. high'],
-          low = _day$['3. low'],
-          close = _day$['4. close'];
+          open = _day$["1. open"],
+          high = _day$["2. high"],
+          low = _day$["3. low"],
+          close = _day$["4. close"];
       return {
         open: open,
         high: high,
