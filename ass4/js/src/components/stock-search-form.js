@@ -1,22 +1,27 @@
-const StockSearch = () => {
-    const [search, setSearch] = React.useState('');
+const StockSearch = ({ submitCallback }) => {
+  const [search, setSearch] = React.useState("");
 
-    const handleSubmit = e => {
-        e.preventDefault();
-        console.log(search)
-    }
+  const handleSubmit = e => {
+    e.preventDefault();
+    submitCallback(search);
+  };
 
   return (
     <div>
-      <form className="frm stock-search" onSubmit={e => e.preventDefault()}>
+      <form className="frm stock-search" onSubmit={handleSubmit}>
         <label htmlFor="symbol">
           Stock Symbol
-          <input id="symbol" name="symbol" value={search} onChange={e => setSearch(e.target.value)} />
+          <input
+            id="symbol"
+            name="symbol"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+          />
         </label>
-        <button onClick={handleSubmit} type="submit">Get Quote</button>
+        <button type="submit">Get Quote</button>
       </form>
     </div>
   );
 };
 
-export {StockSearch};
+export { StockSearch };

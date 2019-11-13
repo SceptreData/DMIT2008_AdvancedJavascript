@@ -36,7 +36,7 @@ Stock.prototype.getStockPrice = function() {
       return Object.assign(this.stockData, { symbol, price, date });
     })
     .catch(err => {
-      return `There was an error: ${err}`;
+      return `${err}`;
     });
 };
 
@@ -69,7 +69,7 @@ Stock.prototype.getStockFiveDayHistory = function() {
       return this.stockData;
     })
     .catch(err => {
-      alert(`There was an error: ${err}`);
+      return `${err}`;
     });
 };
 

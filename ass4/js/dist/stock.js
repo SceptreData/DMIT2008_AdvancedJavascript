@@ -36,7 +36,7 @@ Stock.prototype.getStockPrice = function () {
       date: date
     });
   })["catch"](function (err) {
-    return "There was an error: ".concat(err);
+    return "".concat(err);
   });
 };
 
@@ -68,7 +68,7 @@ Stock.prototype.getStockFiveDayHistory = function () {
     });
     return _this2.stockData;
   })["catch"](function (err) {
-    alert("There was an error: ".concat(err));
+    return "".concat(err);
   });
 };
 

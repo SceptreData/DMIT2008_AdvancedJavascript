@@ -1,4 +1,4 @@
-var _jsxFileName = "C:\\Users\\dbergeron2\\Documents\\DMIT2008_AdvancedJavascript\\ass4\\js\\src\\components\\stock-search-form.js";
+var _jsxFileName = "C:\\Users\\dbergeron2\\Documents\\DMIT2008_AdvancedJavascript\\ass4\\js\\src\\app.js";
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
@@ -8,60 +8,39 @@ function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) ||
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-var StockSearch = function StockSearch(_ref) {
-  var submitCallback = _ref.submitCallback;
+import { StockDisplay } from "./components/stock-price-display.js";
+import { StockSearch } from "./components/stock-search-form.js";
+import { Stock } from "./stock.js";
 
+var App = function App() {
   var _React$useState = React.useState(""),
       _React$useState2 = _slicedToArray(_React$useState, 2),
-      search = _React$useState2[0],
-      setSearch = _React$useState2[1];
+      symbol = _React$useState2[0],
+      setSymbol = _React$useState2[1];
 
-  var handleSubmit = function handleSubmit(e) {
-    e.preventDefault();
-    submitCallback(search);
-  };
-
-  return React.createElement("div", {
+  return React.createElement(React.Fragment, {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 8
+    },
+    __self: this
+  }, React.createElement(StockSearch, {
+    submitCallback: setSymbol,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 9
+    },
+    __self: this
+  }), React.createElement(StockDisplay, {
+    stock: new Stock({
+      symbol: symbol
+    }),
     __source: {
       fileName: _jsxFileName,
       lineNumber: 10
     },
     __self: this
-  }, React.createElement("form", {
-    className: "frm stock-search",
-    onSubmit: handleSubmit,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 11
-    },
-    __self: this
-  }, React.createElement("label", {
-    htmlFor: "symbol",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 12
-    },
-    __self: this
-  }, "Stock Symbol", React.createElement("input", {
-    id: "symbol",
-    name: "symbol",
-    value: search,
-    onChange: function onChange(e) {
-      return setSearch(e.target.value);
-    },
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 14
-    },
-    __self: this
-  })), React.createElement("button", {
-    type: "submit",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 21
-    },
-    __self: this
-  }, "Get Quote")));
+  }));
 };
 
-export { StockSearch };
+export { App };

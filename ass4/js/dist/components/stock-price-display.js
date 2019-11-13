@@ -18,16 +18,24 @@ var StockDisplay = function StockDisplay(_ref) {
   var stock = _ref.stock;
 
   //   let { symbol, date, price } = stock.stockData;
-  var _React$useState = React.useState(null),
+  var _React$useState = React.useState({}),
       _React$useState2 = _slicedToArray(_React$useState, 2),
       stockData = _React$useState2[0],
       setStockData = _React$useState2[1];
 
   React.useEffect(function () {
-    stock.getStockPrice().then(function (data) {
-      return setStockData(_objectSpread({}, data));
-    });
-  }, []);
+    if (stock.symbol) {
+      stock.getStockPrice().then(function (data) {
+        if (data instanceof Object) {
+          setStockData(_objectSpread({}, data));
+        } else {
+          setStockData({
+            error: data
+          });
+        }
+      });
+    }
+  }, [stock]);
 
   var cash = function cash(val) {
     return (+val).toLocaleString("en-US", {
@@ -39,62 +47,74 @@ var StockDisplay = function StockDisplay(_ref) {
   return React.createElement("div", {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 13
+      lineNumber: 21
     },
     __self: this
-  }, stockData ? React.createElement(React.Fragment, {
+  }, stockData.symbol ? React.createElement(React.Fragment, {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 15
+      lineNumber: 23
     },
     __self: this
   }, React.createElement("h1", {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 16
+      lineNumber: 24
     },
     __self: this
   }, "Stock Viewer"), React.createElement("div", {
     className: "details",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 17
+      lineNumber: 25
     },
     __self: this
   }, "symbol: ", stockData.symbol, " ", stockData.date), React.createElement("div", {
     className: "details",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 20
+      lineNumber: 28
     },
     __self: this
   }, "price: ", stockData.price), React.createElement("div", {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 21
+      lineNumber: 29
     },
     __self: this
   }, React.createElement("button", {
     className: "btn-history",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 22
+      lineNumber: 30
     },
     __self: this
   }, "Previous 5 Days")), React.createElement("div", {
     className: "history",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 25
+      lineNumber: 33
     },
     __self: this
-  })) : React.createElement("p", {
+  })) : React.createElement(React.Fragment, {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 28
+      lineNumber: 36
     },
     __self: this
-  }, "No stock data received."));
+  }, React.createElement("p", {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 37
+    },
+    __self: this
+  }, "No stock data received."), stockData.error && React.createElement("p", {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 38
+    },
+    __self: this
+  }, stockData.error)));
 };
 
 export { StockDisplay };
