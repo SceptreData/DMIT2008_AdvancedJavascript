@@ -14,6 +14,8 @@ function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) ||
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+import { History } from "./history.js";
+
 var StockDisplay = function StockDisplay(_ref) {
   var stock = _ref.stock;
 
@@ -44,74 +46,90 @@ var StockDisplay = function StockDisplay(_ref) {
     });
   };
 
+  var handleClick = function handleClick(e) {
+    if (!stockData.history) {
+      stock.getStockFiveDayHistory().then(function (data) {
+        setStockData(_objectSpread({}, stock.stockData));
+      });
+    }
+  };
+
   return React.createElement("div", {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 21
+      lineNumber: 32
     },
     __self: this
   }, stockData.symbol ? React.createElement(React.Fragment, {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 23
+      lineNumber: 34
     },
     __self: this
   }, React.createElement("h1", {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 24
+      lineNumber: 35
     },
     __self: this
   }, "Stock Viewer"), React.createElement("div", {
     className: "details",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 25
+      lineNumber: 36
     },
     __self: this
   }, "symbol: ", stockData.symbol, " ", stockData.date), React.createElement("div", {
     className: "details",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 28
+      lineNumber: 39
     },
     __self: this
   }, "price: ", stockData.price), React.createElement("div", {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 29
+      lineNumber: 40
     },
     __self: this
   }, React.createElement("button", {
     className: "btn-history",
+    onClick: handleClick,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 30
+      lineNumber: 41
     },
     __self: this
-  }, "Previous 5 Days")), React.createElement("div", {
+  }, "Previous 5 Days")), stockData.history && React.createElement("div", {
     className: "history",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 33
+      lineNumber: 44
     },
     __self: this
-  })) : React.createElement(React.Fragment, {
+  }, React.createElement(History, {
+    data: stockData.history,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 36
+      lineNumber: 45
+    },
+    __self: this
+  }))) : React.createElement(React.Fragment, {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 49
     },
     __self: this
   }, React.createElement("p", {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 37
+      lineNumber: 50
     },
     __self: this
   }, "No stock data received."), stockData.error && React.createElement("p", {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 38
+      lineNumber: 51
     },
     __self: this
   }, stockData.error)));

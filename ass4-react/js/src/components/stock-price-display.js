@@ -1,3 +1,4 @@
+import {History} from "./history.js"
 const StockDisplay = ({ stock }) => {
   //   let { symbol, date, price } = stock.stockData;
   const [stockData, setStockData] = React.useState({});
@@ -17,6 +18,16 @@ const StockDisplay = ({ stock }) => {
   const cash = val =>
     (+val).toLocaleString("en-US", { style: "currency", currency: "USD" });
 
+  const handleClick = e => {
+    if (!stockData.history){
+    stock.getStockFiveDayHistory().then(data => {
+      setStockData({
+        ...stock.stockData
+      })
+    })
+    }
+  }
+
   return (
     <div>
       {stockData.symbol ? (
@@ -27,10 +38,12 @@ const StockDisplay = ({ stock }) => {
           </div>
           <div className="details">price: {stockData.price}</div>
           <div>
-            <button className="btn-history">Previous 5 Days</button>
+            <button className="btn-history" onClick={handleClick}>Previous 5 Days</button>
           </div>
-
-          <div className="history"></div>
+          { stockData.history &&
+          <div className="history">
+            <History data={stockData.history} />
+          </div>}
         </React.Fragment>
       ) : (
         <React.Fragment>
