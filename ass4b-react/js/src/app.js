@@ -1,31 +1,54 @@
+import { StockDisplay } from "./components/StockDisplay.js";
+import { StockSearch } from "./components/StockSearch.js";
+import { PreviousReports } from "./components/PreviousReports.js";
 
-import { Stock } from "./stock.js";
-import { StockDisplay } from "./components/stock-price-display.js";
-import { StockSearch } from "./components/stock-search-form.js";
-import { PreviousReports } from "./components/previous-reports.js"
+import { isEmptyObject } from "./components/util.js";
 
 const App = () => {
   const [symbol, setSymbol] = React.useState("");
-  const [curStock, setCurStock] = React.useState({});
-
+  const [stockData, setStockData] = React.useState({});
   const [prevReports, setPrevReports] = React.useState([]);
 
-  React.useEffect(()=>{
+  React.useEffect(() => {
+    function storeReport() {
       let reports = [...prevReports];
-      if (reports.length > 5){
+      if (reports.length > 6) {
         // Remove the oldest report.
         reports.shift();
       }
-      reports.push(prevReports);
+
+      // Make sure StockData isn't empty or the same as our last stock.
+      let isUnique = !prevReports.some(stock => stock.symbol === symbol);
+      if (!isEmptyObject(stockData) && isUnique) {
+        reports.push(stockData);
+      }
       setPrevReports(reports);
-    }, [curStock]
-  );
+    }
+
+    storeReport();
+  }, [stockData]);
+
+  const viewPreviousStock = prevStock => {
+    let stocks = [];
+    // Hm I probably should have just used array.filter
+    for (let stock of prevReports) {
+      if (stock.symbol !== prevStock.symbol) {
+        stocks.push(stock);
+      }
+    }
+    setPrevReports(stocks);
+    setSymbol(prevStock.symbol);
+  };
 
   return (
     <React.Fragment>
       <StockSearch submitCallback={setSymbol} />
-      <StockDisplay stock={new Stock({ symbol: symbol, setCurStock})} />
-      <PreviousReports state={prevReports} />
+      <StockDisplay
+        stockData={stockData}
+        setStockData={setStockData}
+        symbol={symbol}
+      />
+      <PreviousReports state={prevReports} viewCallback={viewPreviousStock} />
     </React.Fragment>
   );
 };

@@ -34,10 +34,7 @@ Stock.prototype.getStockPrice = function() {
         "07. latest trading day": date
       } = data["Global Quote"];
 
-      const newStock = {symbol, price, date};
-      this.setCurStock(newStock);
-      console.log("OU THIS WORKED")
-      return Object.assign(this.stockData, newStock);
+      return Object.assign(this.stockData, { symbol, price, date });
     })
     .catch(err => {
       return `${err}`;

@@ -1,4 +1,4 @@
-var _jsxFileName = "C:\\Users\\dbergeron2\\Documents\\DMIT2008_AdvancedJavascript\\ass4b-react\\js\\src\\main.js";
+var _jsxFileName = "/Users/davidbergeron/projects/edu/DMIT2008_AdvancedJavascript/ass4b-react/js/src/main.js";
 import { App } from "./app.js";
 ReactDOM.render(React.createElement(App, {
   __source: {

@@ -7,7 +7,6 @@ import fetchMock from 'fetch-mock';
 import { Stock } from '../js/dist/stock';
 
 chai.use(chaiAsPromissed); // easier testing of async/promises
-
 const should = chai.should();
 
 // CONSTANTS

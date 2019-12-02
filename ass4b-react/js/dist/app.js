@@ -1,4 +1,4 @@
-var _jsxFileName = "C:\\Users\\dbergeron2\\Documents\\DMIT2008_AdvancedJavascript\\ass4b-react\\js\\src\\app.js";
+var _jsxFileName = "/Users/davidbergeron/projects/edu/DMIT2008_AdvancedJavascript/ass4b-react/js/src/app.js";
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
@@ -16,10 +16,10 @@ function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) ||
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-import { Stock } from "./stock.js";
-import { StockDisplay } from "./components/stock-price-display.js";
-import { StockSearch } from "./components/stock-search-form.js";
-import { PreviousReports } from "./components/previous-reports.js";
+import { StockDisplay } from "./components/StockDisplay.js";
+import { StockSearch } from "./components/StockSearch.js";
+import { PreviousReports } from "./components/PreviousReports.js";
+import { isEmptyObject } from "./components/util.js";
 
 var App = function App() {
   var _React$useState = React.useState(""),
@@ -29,8 +29,8 @@ var App = function App() {
 
   var _React$useState3 = React.useState({}),
       _React$useState4 = _slicedToArray(_React$useState3, 2),
-      curStock = _React$useState4[0],
-      setCurStock = _React$useState4[1];
+      stockData = _React$useState4[0],
+      setStockData = _React$useState4[1];
 
   var _React$useState5 = React.useState([]),
       _React$useState6 = _slicedToArray(_React$useState5, 2),
@@ -38,44 +38,91 @@ var App = function App() {
       setPrevReports = _React$useState6[1];
 
   React.useEffect(function () {
-    var reports = _toConsumableArray(prevReports);
+    function storeReport() {
+      var reports = _toConsumableArray(prevReports);
 
-    if (reports.length > 5) {
-      // Remove the oldest report.
-      reports.shift();
+      if (reports.length > 6) {
+        // Remove the oldest report.
+        reports.shift();
+      } // Make sure StockData isn't empty or the same as our last stock.
+
+
+      var isUnique = !prevReports.some(function (stock) {
+        return stock.symbol === symbol;
+      });
+
+      if (!isEmptyObject(stockData) && isUnique) {
+        reports.push(stockData);
+      }
+
+      setPrevReports(reports);
     }
 
-    reports.push(prevReports);
-    setPrevReports(reports);
-  }, [curStock]);
+    storeReport();
+  }, [stockData]);
+
+  var viewPreviousStock = function viewPreviousStock(prevStock) {
+    var stocks = []; // Hm I probably should have just used array.filter
+
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+      for (var _iterator = prevReports[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        var stock = _step.value;
+
+        if (stock.symbol !== prevStock.symbol) {
+          stocks.push(stock);
+        }
+      }
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+          _iterator["return"]();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
+      }
+    }
+
+    setPrevReports(stocks);
+    setSymbol(prevStock.symbol);
+  };
+
   return React.createElement(React.Fragment, {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 25
+      lineNumber: 44
     },
     __self: this
   }, React.createElement(StockSearch, {
     submitCallback: setSymbol,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 26
+      lineNumber: 45
     },
     __self: this
   }), React.createElement(StockDisplay, {
-    stock: new Stock({
-      symbol: symbol,
-      setCurStock: setCurStock
-    }),
+    stockData: stockData,
+    setStockData: setStockData,
+    symbol: symbol,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 27
+      lineNumber: 46
     },
     __self: this
   }), React.createElement(PreviousReports, {
     state: prevReports,
+    viewCallback: viewPreviousStock,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 28
+      lineNumber: 51
     },
     __self: this
   }));

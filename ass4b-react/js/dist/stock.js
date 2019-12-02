@@ -30,16 +30,11 @@ Stock.prototype.getStockPrice = function () {
         symbol = _data$GlobalQuote["01. symbol"],
         price = _data$GlobalQuote["05. price"],
         date = _data$GlobalQuote["07. latest trading day"];
-    var newStock = {
+    return Object.assign(_this.stockData, {
       symbol: symbol,
       price: price,
       date: date
-    };
-
-    _this.setCurStock(newStock);
-
-    console.log("OU THIS WORKED");
-    return Object.assign(_this.stockData, newStock);
+    });
   })["catch"](function (err) {
     return "".concat(err);
   });

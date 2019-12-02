@@ -3,7 +3,7 @@ const StockSearch = ({ submitCallback }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    submitCallback(search);
+    submitCallback(search.toUpperCase());
   };
 
   return (

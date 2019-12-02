@@ -58,6 +58,11 @@ Stock.prototype.getStock = function() {
     });
 };
 
+/**
+ * Fetches stock History for the stock object.
+ * @returns {Promise} Promise object resolves an array of stock data:
+ * {open, high, low, close, date}
+ */
 Stock.prototype.getHistory = function() {
   return fetch(
     `${ENDPOINT}TIME_SERIES_DAILY&symbol=${this.symbol}&apikey=${API_KEY}`
@@ -92,12 +97,23 @@ Stock.prototype.getHistory = function() {
     });
 };
 
+/**
+ * Fetches stock data and History for the stock object.
+ * @returns {Promise} Promise object resolves stock data and history:
+ * {open, high, low, close, date, history}
+ */
+
 Stock.prototype.getCurrentAndFiveDayHistory = function() {
   return this.getStock().then(() => {
     return this.getHistory();
   });
 };
 
+/**
+ * Check if Stock has loaded its stock data.
+ * @returns {Boolean}
+ *
+ */
 Stock.prototype.isEmpty = function() {
   return Object.entries(this.stockData).length === 0;
 };

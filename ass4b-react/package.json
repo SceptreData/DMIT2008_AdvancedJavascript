@@ -6,9 +6,8 @@
   "scripts": {
     "babel": "npx babel js/src/ --out-dir js/dist/ ",
     "watch": "npx babel js/src/ --out-dir js/dist/ --ignore \"js/src/**/*.handlebars\" --watch",
-    "handlebars": "npx handlebars js/src/templates/ -f js/dist/templates.js -k each",
     "test": "npx mocha -r esm",
-    "build": "npm run babel && npm run handlebars"
+    "build": "npm run babel"
   },
   "keywords": [],
   "author": "",

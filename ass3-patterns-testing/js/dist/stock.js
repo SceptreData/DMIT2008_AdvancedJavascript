@@ -53,6 +53,12 @@ Stock.prototype.getStock = function () {
     alert("There was an error: ".concat(err));
   });
 };
+/**
+ * Fetches stock History for the stock object.
+ * @returns {Promise} Promise object resolves an array of stock data:
+ * {open, high, low, close, date}
+ */
+
 
 Stock.prototype.getHistory = function () {
   var _this2 = this;
@@ -89,6 +95,12 @@ Stock.prototype.getHistory = function () {
     alert("There was an error: ".concat(err));
   });
 };
+/**
+ * Fetches stock data and History for the stock object.
+ * @returns {Promise} Promise object resolves stock data and history:
+ * {open, high, low, close, date, history}
+ */
+
 
 Stock.prototype.getCurrentAndFiveDayHistory = function () {
   var _this3 = this;
@@ -97,6 +109,12 @@ Stock.prototype.getCurrentAndFiveDayHistory = function () {
     return _this3.getHistory();
   });
 };
+/**
+ * Check if Stock has loaded its stock data.
+ * @returns {Boolean}
+ *
+ */
+
 
 Stock.prototype.isEmpty = function () {
   return Object.entries(this.stockData).length === 0;

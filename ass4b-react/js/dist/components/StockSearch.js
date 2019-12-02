@@ -1,4 +1,4 @@
-var _jsxFileName = "/Users/davidbergeron/projects/edu/DMIT2008_AdvancedJavascript/ass4b-react/js/src/components/stock-search-form.js";
+var _jsxFileName = "/Users/davidbergeron/projects/edu/DMIT2008_AdvancedJavascript/ass4b-react/js/src/components/StockSearch.js";
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
@@ -18,7 +18,7 @@ var StockSearch = function StockSearch(_ref) {
 
   var handleSubmit = function handleSubmit(e) {
     e.preventDefault();
-    submitCallback(search);
+    submitCallback(search.toUpperCase());
   };
 
   return React.createElement("div", {
