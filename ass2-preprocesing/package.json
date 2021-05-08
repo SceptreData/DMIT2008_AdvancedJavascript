@@ -17,7 +17,7 @@
   "devDependencies": {
     "@babel/cli": "^7.6.2",
     "@babel/core": "^7.6.2",
-    "handlebars": "^4.4.0",
+    "handlebars": "^4.7.7",
     "stylus": "^0.54.7",
     "@babel/preset-env": "^7.6.3",
     "babel-plugin-transform-modules-iife": "^1.0.0"
